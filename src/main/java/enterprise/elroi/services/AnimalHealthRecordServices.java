@@ -1,6 +1,5 @@
 package enterprise.elroi.services;
 
-import enterprise.elroi.data.models.Animal;
 import enterprise.elroi.data.models.AnimalHealthRecord;
 import enterprise.elroi.data.repositories.AnimalHealthRecordRepository;
 import enterprise.elroi.dto.requests.AnimalHealthRecordRequest;
@@ -8,11 +7,12 @@ import enterprise.elroi.dto.responses.AnimalHealthRecordResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 @Service
-public class AnimalHealthRecordServices  implements AnimalHealthRecordInterface{
+public class AnimalHealthRecordServices implements AnimalHealthRecordInterface {
 
     private AnimalHealthRecordRepository repository;
 
@@ -27,16 +27,18 @@ public class AnimalHealthRecordServices  implements AnimalHealthRecordInterface{
 
         animalHealthRecord.setDescription(request.getDescription());
         animalHealthRecord.setAnimal(request.getAnimal());
-        animalHealthRecord.setDate(request.getDate());
+        animalHealthRecord.setDate(java.time.LocalDateTime.now());
+
 
         repository.save(animalHealthRecord);
 
-        AnimalHealthRecordResponse response = new AnimalHealthRecordResponse();
 
-        response.setDate(animalHealthRecord.getDate().toString());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy hh:mm a");
+
+        AnimalHealthRecordResponse response = new AnimalHealthRecordResponse();
+        response.setDate(animalHealthRecord.getDate().format(formatter));
         response.setDescription(animalHealthRecord.getDescription());
         response.setMessage("Health Record saved successfully");
-
 
         return response;
     }
@@ -46,10 +48,10 @@ public class AnimalHealthRecordServices  implements AnimalHealthRecordInterface{
         Optional<AnimalHealthRecord> record = repository.findById(id);
         if (record.isEmpty()) throw new RuntimeException("Animal Health Record Not Found");
 
-         repository.deleteById(id);
-         AnimalHealthRecordResponse response = new AnimalHealthRecordResponse();
-         response.setMessage("Health Record deleted successfully");
+        repository.deleteById(id);
 
+        AnimalHealthRecordResponse response = new AnimalHealthRecordResponse();
+        response.setMessage("Health Record deleted successfully");
 
         return response;
     }
@@ -57,16 +59,17 @@ public class AnimalHealthRecordServices  implements AnimalHealthRecordInterface{
     @Override
     public AnimalHealthRecordResponse viewDiseaseDiscription(String id) {
         Optional<AnimalHealthRecord> animalHealthRecord = repository.findById(id);
-        if(animalHealthRecord.isEmpty()) throw new RuntimeException("Animal health Record Not found");
+        if (animalHealthRecord.isEmpty()) throw new RuntimeException("Animal health Record Not found");
+
         AnimalHealthRecord viewedAnimal = animalHealthRecord.get();
 
-      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy hh:mm a");
 
         AnimalHealthRecordResponse response = new AnimalHealthRecordResponse();
         response.setDate(viewedAnimal.getDate().format(formatter));
         response.setDescription(viewedAnimal.getDescription());
         response.setMessage("Animal Record Retrieved Successfully");
-
 
         return response;
     }

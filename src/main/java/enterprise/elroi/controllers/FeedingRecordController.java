@@ -32,7 +32,7 @@ public class FeedingRecordController {
     }
 
     @GetMapping("/view/{id}")
-    public ResponseEntity<?> viewFeed(@PathVariable String id){
+    public ResponseEntity<?> viewFeed(@PathVariable("id") String id){
         try {
             FeedingRecordResponse feedingRecordResponse = feedingRecordService.viewFeed(id);
             return new ResponseEntity<>(feedingRecordResponse, HttpStatus.OK);

@@ -9,12 +9,16 @@ public class EnterFeedMapper {
 
     public static FeedingRecordResponse mapEnter(FeedingRecords record) {
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy hh:mm a");
 
         FeedingRecordResponse response = new FeedingRecordResponse();
         response.setFeedType(record.getFeedType());
         response.setQuantity(record.getQuantity());
-        response.setDate(record.getDate().format(formatter));
+
+
+        response.setDate(formatter.format(record.getDate()));
+
         response.setMessage("Feeding Records saved successfully");
 
         return response;

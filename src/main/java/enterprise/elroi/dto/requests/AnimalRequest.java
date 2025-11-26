@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AnimalRequest {
 
-
     @NotBlank
     private String name;
 

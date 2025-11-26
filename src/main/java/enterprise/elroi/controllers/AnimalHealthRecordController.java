@@ -32,7 +32,7 @@ public class AnimalHealthRecordController {
 
     }
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteDiseaseDiscription(@PathVariable String id) {
+    public ResponseEntity<?> deleteDiseaseDiscription(@PathVariable("id") String id) {
         try {
             AnimalHealthRecordResponse animalHealthRecordResponse = animalHealthRecordService.deleteDiseaseDiscription(id);
             return new ResponseEntity<>(new ApiResponse(true, animalHealthRecordResponse), HttpStatus.OK);
@@ -42,7 +42,7 @@ public class AnimalHealthRecordController {
     }
 
     @GetMapping("/view/{id}")
-    public ResponseEntity<?> viewDiseaseDiscription (@PathVariable String id) {
+    public ResponseEntity<?> viewDiseaseDiscription (@PathVariable("id") String id) {
         try {
             AnimalHealthRecordResponse animalHealthRecordResponse = animalHealthRecordService.viewDiseaseDiscription(id);
             return new ResponseEntity<>(new ApiResponse(true, animalHealthRecordResponse), HttpStatus.OK);
